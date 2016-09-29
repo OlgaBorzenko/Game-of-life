@@ -83,18 +83,17 @@ $(document).ready(function() {
 
 	            }
             }
-        }
          for (var l = 1; l < numCells - 1; l++) {
-	        nextArr[l][0] = nextArr[l][numCells-1];
-	        nextArr[l][numCells-1] = nextArr[l][1];
-	        nextArr[0][l] = nextArr[numCells-1][l];
-	        nextArr[numCells-1][l] = nextArr[1][l];
+	     nextArr[l][0] = nextArr[l][numCells-1];
+	     nextArr[l][numCells-1] = nextArr[l][1];
+	     nextArr[0][l] = nextArr[numCells-1][l];
+	     nextArr[numCells-1][l] = nextArr[1][l];
 
 	    }
 
        var t = arr;
-	   arr = nextArr;
-	   nextArr = t;
+       arr = nextArr;
+       nextArr = t;
        display(nextArr);
         
     }
