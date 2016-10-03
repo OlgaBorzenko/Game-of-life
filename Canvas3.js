@@ -50,26 +50,49 @@ $(document).ready(function() {
         return arr;
     }
 
-   
+    function aliveNeighbors(arr, x, y) {
+
+        var totalAlive = arr[fixCoordinate(x - 1)][fixCoordinate(y - 1)] //top left
+            +
+            arr[fixCoordinate(x - 1)][y] //top center
+            +
+            arr[fixCoordinate(x + 1)][fixCoordinate(y + 1)] //bottom right
+            +
+            arr[x][fixCoordinate(y - 1)] //middle left
+            +
+            arr[fixCoordinate(x + 1)][y] //bottom center
+            +
+            arr[fixCoordinate(x - 1)][fixCoordinate(y + 1)] //top right
+            +
+            arr[x][fixCoordinate(y + 1)] //middle right
+            +
+            arr[fixCoordinate(x + 1)][fixCoordinate(y - 1)]; //bottom left
+
+        return totalAlive;
+
+
+    }
+
+    function fixCoordinate(coord) {
+        return (coord + arr.length) % arr.length
+    }
 
     function display(arr) {
         for (var x = 0; x < arr.length; x++) {
             for (var y = 0; y < arr[x].length; y++) {
                 drawCell(x, y, arr[x][y]);
+
             }
         }
     }
 
     function step() {
         var nextArr = buildArr();
-        for (var x = 1; x < arr.length - 1 ; x++) {
-            for (var y = 1; y < arr[x].length - 1 ; y++) {
+        for (var x = 0; x < arr.length; x++) {
+            for (var y = 0; y < arr[x].length; y++) {
+                var totalAlive = aliveNeighbors(arr, x, y);
 
-                var totalAlive = arr[x - 1][y - 1] + arr[x - 1][y] +
-                    arr[x + 1][y + 1] + arr[x][y - 1] + arr[x + 1][y] +
-                    arr[x - 1][y + 1] + arr[x][y + 1] + arr[x + 1][y - 1];
-
-                 if (arr[x][y] == 1) {
+                if (arr[x][y] == 1) {
                     if (totalAlive < 2) {
                         nextArr[x][y] = 0;
                     } else if (totalAlive == 2 || totalAlive == 3) {
@@ -80,26 +103,18 @@ $(document).ready(function() {
                 } else if (arr[x][y] == 0 && totalAlive == 3) {
                     nextArr[x][y] = 1;
                 }
-
-	            }
             }
-         for (var l = 1; l < numCells - 1; l++) {
-	     nextArr[l][0] = nextArr[l][numCells-1];
-	     nextArr[l][numCells-1] = nextArr[l][1];
-	     nextArr[0][l] = nextArr[numCells-1][l];
-	     nextArr[numCells-1][l] = nextArr[1][l];
+        }
 
-	    }
-
-       var t = arr;
-       arr = nextArr;
-       nextArr = t;
-       display(nextArr);
-        
+        var t = arr;
+        arr = nextArr;
+        //nextArr = t;
+        display(nextArr);
     }
+
     create(arr);
     $(".start").on("click", function() {
-         step();
+        step();
 
     });
 })
